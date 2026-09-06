@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="PCGameFit">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121A0B"/>
+      <stop offset="1" stop-color="#070810"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#B6FF00" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#B6FF00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="930" cy="170" r="360" fill="url(#glow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#B6FF00"/>
+  <g font-family="Segoe UI, system-ui, -apple-system, Helvetica, Arial, sans-serif">
+    <text x="80" y="126" font-size="26" font-weight="700" letter-spacing="4" fill="#B6FF00">FREE · INSTANT · NO DOWNLOAD</text>
+    <text x="80" y="286" font-size="86" font-weight="800" fill="#F2F5F9" letter-spacing="-2">Can your PC</text>
+    <text x="80" y="382" font-size="86" font-weight="800" fill="#B6FF00" letter-spacing="-2">run that game?</text>
+    <text x="80" y="470" font-size="30" fill="#98A1AE">Publisher-stated requirements, checked against your parts.</text>
+    <text x="80" y="568" font-size="27" font-weight="600" fill="#7E8796">PCGameFit<tspan fill="#B6FF00">.com</tspan></text>
+  </g>
+</svg>
