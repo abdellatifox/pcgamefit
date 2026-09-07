@@ -104,6 +104,14 @@ export const GPU_ROWS = [
   ['NVIDIA GeForce GT 730',          'NVIDIA', 2014,  2,  49,  75,    2, ['gt 730']],
 
   // ---------------------------------------------------------------- NVIDIA laptop
+  // perf cross-checked against Notebookcheck/Tom's Hardware RTX 50-laptop
+  // launch coverage: the 5090 laptop chip lands close to a desktop 4070 Ti
+  // SUPER/5070, the 5080 laptop chip benchmarks ~10% behind it and ~32%
+  // behind its own desktop namesake, and the desktop 5070 runs 15-20%
+  // ahead of the 5070 laptop chip.
+  ['NVIDIA GeForce RTX 5090 Laptop', 'NVIDIA', 2025, 24, 150, null,  70, ['rtx 5090 laptop', 'rtx 5090 mobile']],
+  ['NVIDIA GeForce RTX 5080 Laptop', 'NVIDIA', 2025, 16, 150, null,  66, ['rtx 5080 laptop', 'rtx 5080 mobile']],
+  ['NVIDIA GeForce RTX 5070 Laptop', 'NVIDIA', 2025,  8, 115, null,  54, ['rtx 5070 laptop', 'rtx 5070 mobile']],
   ['NVIDIA GeForce RTX 4090 Laptop', 'NVIDIA', 2023, 16, 175, null,  63, ['rtx 4090 laptop', 'rtx 4090 mobile']],
   ['NVIDIA GeForce RTX 4080 Laptop', 'NVIDIA', 2023, 12, 150, null,  53, ['rtx 4080 laptop']],
   ['NVIDIA GeForce RTX 4070 Laptop', 'NVIDIA', 2023,  8, 115, null,  40, ['rtx 4070 laptop']],
