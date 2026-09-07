@@ -36,6 +36,11 @@ const LIMIT = parseInt(process.argv[2] || '0', 10) || Infinity;
  */
 const WIDTHS = [
   { w: 320, avif: 42, webp: 70 },
+  // Cards render at ~182 CSS px on a typical mobile viewport; at the ~2.6x
+  // device pixel ratio Lighthouse tests with, that needs ~475 real px. 320w
+  // undershoots it and forces the browser up to 640w, shipping roughly twice
+  // the pixels actually displayed — this tier closes that gap.
+  { w: 480, avif: 46, webp: 73 },
   { w: 640, avif: 50, webp: 76 }
 ];
 const UA = { 'User-Agent': 'PCGameFit/1.0 (+https://pcgamefit.com)' };
@@ -63,10 +68,16 @@ for (const [slug, a] of targets) {
   // photographic and crops to the card.
   const isLogo = Boolean(a.logoOnly);
 
-  // Resume, but only when the cached file was built from the same kind of
-  // source. Games that gained a logo after their first encode still had a
-  // cover-cropped key-art file on disk, and the old guard kept serving it.
-  if (manifest[slug] && manifest[slug].logo === isLogo) { skipped++; continue; }
+  // Resume per width, not per game: a game already encoded at 320/640 (from
+  // before this ran with a 480 tier added) should only fetch once more to
+  // fill the gap, not be treated as fully done or re-encoded from scratch.
+  // Games that gained a logo after their first encode still had a
+  // cover-cropped key-art file on disk, so a kind change still starts fresh.
+  const existing = manifest[slug];
+  const sameKind = Boolean(existing) && existing.logo === isLogo;
+  const missingWidths = WIDTHS.filter(({ w }) => !(sameKind && existing.w?.[w]));
+  if (!missingWidths.length) { skipped++; continue; }
+
   const url = isLogo ? (a.logo || a.logoThumb) : (a.grid || a.gridThumb);
   if (!url) { skipped++; continue; }
 
@@ -76,9 +87,9 @@ for (const [slug, a] of targets) {
     const input = Buffer.from(await res.arrayBuffer());
     srcBytes += input.length;
 
-    const entry = { logo: isLogo, w: {} };
+    const entry = sameKind ? existing : { logo: isLogo, w: {} };
 
-    for (const { w, avif: aq, webp: pq } of WIDTHS) {
+    for (const { w, avif: aq, webp: pq } of missingWidths) {
       const base = sharp(input).resize({
         width: w,
         // Covers fill a 2:3 card; logos must stay whole inside their box.

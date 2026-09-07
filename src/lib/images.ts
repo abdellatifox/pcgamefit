@@ -58,8 +58,8 @@ export function getArtSources(slug: string, _remote: string, sizes: string): Art
   // has local art the WebP serves that role — it is universally supported, so
   // the remote URL is now only reached when we have no local copy at all.
   return {
-    avif: `/art/${slug}-320.avif 320w, /art/${slug}-640.avif 640w`,
-    webp: `/art/${slug}-320.webp 320w, /art/${slug}-640.webp 640w`,
+    avif: `/art/${slug}-320.avif 320w, /art/${slug}-480.avif 480w, /art/${slug}-640.avif 640w`,
+    webp: `/art/${slug}-320.webp 320w, /art/${slug}-480.webp 480w, /art/${slug}-640.webp 640w`,
     src: `/art/${slug}-640.webp`,
     sizes
   };

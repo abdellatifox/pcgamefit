@@ -123,8 +123,11 @@ const year = new Date().getFullYear();
   <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Game artwork is the one origin we still hit; warm it early. -->
-  <link rel="preconnect" href="https://cdn2.steamgriddb.com" crossorigin>
+  <!-- Every reachable game now has locally-built art (scripts/build-art.mjs),
+       so SteamGridDB is no longer on the critical path for any page. If a game
+       is ever added without running that script first, GameArt.astro's plain
+       <img> fallback still points at the remote URL — just without a warm
+       connection, which only matters for that rare, temporary case. -->
 
   <!-- Icons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
