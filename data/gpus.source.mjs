@@ -24,6 +24,10 @@ export const GPU_ROWS = [
   ['NVIDIA GeForce RTX 5060 Ti 16GB','NVIDIA', 2025, 16, 180, 429,   50, ['rtx 5060 ti 16gb', 'rtx 5060ti 16gb']],
   ['NVIDIA GeForce RTX 5060 Ti 8GB', 'NVIDIA', 2025,  8, 180, 379,   49, ['rtx 5060 ti 8gb']],
   ['NVIDIA GeForce RTX 5060',        'NVIDIA', 2025,  8, 145, 299,   41, ['rtx 5060']],
+  // Reviews put it ~5-7% behind the RTX 4060 and clearly ahead of the RTX
+  // 3060, consistent across Tom's Hardware, TweakTown and VideoCardz launch
+  // coverage (July 2025).
+  ['NVIDIA GeForce RTX 5050',        'NVIDIA', 2025,  8, 130, 249,   33, ['rtx 5050']],
 
   // ---------------------------------------------------------------- NVIDIA RTX 40
   ['NVIDIA GeForce RTX 4090',        'NVIDIA', 2022, 24, 450, 1599, 100, ['rtx 4090']],
