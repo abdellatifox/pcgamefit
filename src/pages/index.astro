@@ -5,6 +5,7 @@ import { staticGames, staticPosts, staticGpus, staticCpus } from '../lib/db';
 import { getGameArt, getPostCover } from '../lib/images';
 import Icon from '../components/Icon.astro';
 import Autocomplete from '../components/Autocomplete.astro';
+import GameArt from '../components/GameArt.astro';
 
 const HERO_RAM_OPTIONS = [4, 8, 16, 32, 64].map(n => ({ label: `${n} GB`, value: String(n) }));
 
@@ -241,15 +242,9 @@ const homeFaqSchema = {
           <div class="game-card">
             <a href={`/game/${game.slug}`} class="game-img-wrap" data-kind={game.art.kind}
                style={game.art.kind !== 'cover' ? `--hue:${game.art.hue}` : undefined}>
-              {game.art.kind === 'cover' && (
-                <img src={game.art.src} alt={game.art.alt} class="game-img"
-                     width="300" height="450" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
-              )}
-              {game.art.kind === 'logo' && (
-                <img src={game.art.src} alt={game.art.alt} class="game-logo"
-                     loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
-              )}
-              {game.art.kind === 'none' && <span class="game-initials" aria-hidden="true">{game.art.initials}</span>}
+              <GameArt slug={game.slug} art={game.art} eager={i < 4}
+                sizes="(max-width: 640px) 45vw, 220px"
+                className={game.art.kind === 'cover' ? 'game-img' : game.art.kind === 'logo' ? 'game-logo' : 'game-initials'} />
             </a>
             <div class="game-info">
               <h4><a href={`/game/${game.slug}`}>{game.name}</a></h4>

@@ -22,21 +22,25 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "pcgamefit-db"
-database_id = "REPLACE_WITH_D1_ID"
+database_id = "f9cf287b-051c-440c-93ee-4b468a0cf503"
 migrations_dir = "migrations"
 
 # Caches autocomplete results. Optional: the search APIs skip the cache and
 # query directly when this namespace is missing or erroring.
 [[kv_namespaces]]
 binding = "PGF_KV"
-id = "REPLACE_WITH_KV_ID"
+id = "cabbc2ee9b044d52ab4a5acc184bc3d0"
 
 # Required by @astrojs/cloudflare's session support. Without it the build
 # warns "Invalid binding `SESSION`".
 [[kv_namespaces]]
 binding = "SESSION"
-id = "REPLACE_WITH_SESSION_KV_ID"
+id = "a9f50da3521746b79875f04e18d7bb08"
 
-[[r2_buckets]]
-binding = "PGF_R2"
-bucket_name = "pcgamefit-assets"
+# R2 is not yet enabled on this Cloudflare account (dashboard -> R2 -> Enable).
+# Nothing in src/ reads PGF_R2 yet, so the site does not need this binding to
+# run. Once R2 is enabled: npx wrangler r2 bucket create pcgamefit-assets,
+# then uncomment this block.
+# [[r2_buckets]]
+# binding = "PGF_R2"
+# bucket_name = "pcgamefit-assets"
