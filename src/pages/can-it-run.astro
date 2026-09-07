@@ -258,12 +258,21 @@ const schema = [
   }
   :global(.req-tab.active) { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
 
-  :global(.req-table) { width: 100%; border-collapse: collapse; font-size: 14px; }
+  /* Four columns (a label, your part, the publisher's own wording, a verdict
+     pill) do not fit a narrow phone at any font size without either breaking
+     "Graphics card" mid-word or truncating the publisher's text. Scrolling the
+     table horizontally keeps every word intact instead. */
+  :global(.req-table) { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 14px; }
   :global(.req-table th) {
     text-align: left; padding: 9px 10px; font-size: 11px; text-transform: uppercase;
     letter-spacing: .06em; color: var(--accent); border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap; overflow-wrap: normal;
   }
-  :global(.req-table td) { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  :global(.req-table td) {
+    padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top;
+    overflow-wrap: normal;
+  }
+  :global(.req-table td:first-child) { white-space: nowrap; }
   :global(.req-table td.state) { width: 96px; white-space: nowrap; }
   :global(.req-table .pub) { color: var(--muted); font-size: 13px; line-height: 1.45; }
   :global(.st) { font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
@@ -305,10 +314,12 @@ const schema = [
       </tr>`).join('');
     const extra = [side.os && `OS: ${side.os}`, side.directx && side.directx].filter(Boolean).join(' · ');
     return `
-      <table class="req-table">
-        <thead><tr><th>Component</th><th>Yours</th><th>Publisher states</th><th>Result</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="req-table">
+          <thead><tr><th>Component</th><th>Yours</th><th>Publisher states</th><th>Result</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
       ${extra ? `<p class="caveat">${esc(extra)}</p>` : ''}`;
   }
 

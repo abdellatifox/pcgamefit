@@ -55,6 +55,11 @@ const {
     <button type="button" class="ac-clear" hidden aria-label={`Clear ${label}`}>
       <Icon name="x-lg" />
     </button>
+    {options && options.length > 0 && (
+      <svg class="ac-chevron" aria-hidden="true" viewBox="0 0 16 16" width="12" height="12">
+        <path fill="currentColor" d="M3.7 5.5a.75.75 0 0 1 1.06.04L8 9.148l3.24-3.608a.75.75 0 1 1 1.12 1l-3.8 4.23a.75.75 0 0 1-1.12 0l-3.8-4.23a.75.75 0 0 1 .06-1.04Z" />
+      </svg>
+    )}
   </div>
 
   {hint && <small class="ac-hint" id={`${id}-hint`}>{hint}</small>}
@@ -117,6 +122,12 @@ const {
     animation: ac-spin .6s linear infinite;
   }
   @keyframes ac-spin { to { transform: rotate(360deg); } }
+
+  /* A locally-optioned field (RAM) is a closed list, not a search box — the
+     chevron says so at a glance, the way a native <select> would. It shares
+     the spinner's slot because the two never appear together: a local list
+     never hits the network, so the spinner is always hidden here. */
+  .ac-chevron { position: absolute; right: 32px; color: var(--faint); pointer-events: none; }
 
   .ac-hint { display: block; margin-top: 5px; font-size: 11.5px; color: var(--faint); }
 
@@ -342,7 +353,13 @@ const {
       debounce = window.setTimeout(() => search(q), localOptions ? 0 : 160);
     });
 
-    input.addEventListener('focus', () => { if (input.value) search(input.value); });
+    input.addEventListener('focus', () => {
+      // A closed list should open showing every option, the way a native
+      // <select> does — filtering by whatever is already typed just showed a
+      // list of one and made it look broken for a field that starts pre-filled.
+      if (localOptions) { search(''); return; }
+      if (input.value) search(input.value);
+    });
 
     input.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'ArrowDown') { e.preventDefault(); if (list.hidden) search(input.value); else setActive(active + 1); }

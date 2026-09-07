@@ -61,9 +61,16 @@ export const GET: APIRoute = async (context) => {
     220   // titles are noisy; ownership is the strongest disambiguator we have
   );
 
+  // Only 478 of the index's 29,465 rows have bundled requirements (`r`); the
+  // rest have a real slug in the index for search/display purposes, but that
+  // slug is never in game-reqs.json's bySlug map, so submitting it resolved to
+  // nothing and every one of those games — the large majority — showed
+  // "we could not find published PC requirements" even though Steam has them.
+  // Point unbundled titles at their real appid instead, so the same live-fetch
+  // path used for titles found via Steam's own search also fires for these.
   const data: Suggestion[] = hits.map(g => ({
     label: g.n,
-    value: g.s,
+    value: g.r ? g.s : `steam:${g.a}`,
     meta: g.r ? 'Requirements on file' : 'Requirements fetched on open',
     badge: undefined
   }));
