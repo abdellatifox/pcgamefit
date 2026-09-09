@@ -51,7 +51,7 @@ const siteGraph = [
     "@id": SITE_URL + "/#organization",
     "name": SITE_NAME,
     "url": SITE_URL,
-    "logo": { "@type": "ImageObject", "url": SITE_URL + "/favicon.svg" },
+    "logo": { "@type": "ImageObject", "url": SITE_URL + "/logo-512.png" },
     "description": "Free PC game compatibility, FPS estimation and hardware ranking tools."
   },
   {
@@ -130,8 +130,11 @@ const year = new Date().getFullYear();
        connection, which only matters for that rare, temporary case. -->
 
   <!-- Icons -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <!-- iOS ignores SVG here, so this one has to be raster and opaque. -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
 
   <!-- Feeds -->

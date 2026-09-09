@@ -260,23 +260,13 @@ header.nav {
   font-size: 1.12rem;
 }
 
-.brand .icon {
-  width: 32px;
+/* The lockup is a fixed-ratio image, so height drives it and width follows.
+   Both attributes are on the tag as well, so it reserves space before it
+   loads and never shifts the header. */
+.brand img {
   height: 32px;
-  border-radius: 10px;
-  background: linear-gradient(140deg, var(--accent), var(--accent-deep));
-  display: grid;
-  place-items: center;
-  color: #090A0F;
-  font-size: 1.1rem;
-  box-shadow: 0 6px 20px -6px var(--accent-glow);
-}
-
-.brand b {
-  background: linear-gradient(120deg, #E8ECF2, var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  width: auto;
+  display: block;
 }
 
 .nav-links {
@@ -1457,8 +1447,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
     align-items: center;
   }
   .menu-btn { width: 40px; height: 40px; flex: 0 0 auto; }
-  .brand span { font-size: 15px; }
-  .brand .icon { width: 32px; height: 32px; }
+    .brand img { height: 26px; }
 }
 
 /* Only the narrowest phones drop the wordmark. 375px covers the iPhone SE and
