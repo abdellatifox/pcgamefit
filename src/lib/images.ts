@@ -115,9 +115,11 @@ export function getGameArt(slug: string, name?: string): GameArt {
  * site's default card instead of borrowed artwork.
  */
 export function getGameOgImage(slug: string): string | undefined {
-  const e = ART[slug];
-  if (!e) return undefined;
-  return e.logo || undefined;
+  // Prefer the card built by scripts/build-og-cards.mjs: 1200x630, opaque, on
+  // our own origin. Falling back to the SteamGridDB logo would hand social
+  // platforms a transparent PNG of arbitrary shape from a third party.
+  if (LOCAL[slug]) return `/og/${slug}.jpg`;
+  return undefined;
 }
 
 export const hasArt = (slug: string) => Boolean(ART[slug]);
