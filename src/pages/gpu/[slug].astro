@@ -61,8 +61,8 @@ const upscalers = [
   gpu.supports_xess && 'XeSS'
 ].filter(Boolean) as string[];
 
-const title = `${gpu.name} — Benchmarks, Specs & What It Can Run | PCGameFit`;
-const description = `${gpu.name} performance: ${gpu.vram_gb}GB VRAM, ${gpu.tdp_watts}W, score ${gpu.score}/100 (tier ${gpu.tier}). Best suited to ${resVerdict}. See estimated FPS across ${showcase.length} demanding games.`;
+const title = `${gpu.name} — Benchmarks & FPS | PCGameFit`;
+const description = `${gpu.name}: ${gpu.vram_gb}GB VRAM, ${gpu.tdp_watts}W, score ${gpu.score}/100 (tier ${gpu.tier}). Best at ${resVerdict}, with estimated FPS in ${showcase.length} demanding games.`;
 
 const schema = [
   {
