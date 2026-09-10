@@ -30,4 +30,4 @@ export const absUrl = (path = '/') => `${SITE_URL}${path.startsWith('/') ? path 
  * bucket holds an identical /art/<slug>-<width>.<ext> layout, so only this line
  * changes. Flip it back to '' at any time to fall back to Pages.
  */
-export const ART_BASE = 'https://cdn.pcgamefit.com';
+export const ART_BASE = '';
