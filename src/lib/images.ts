@@ -12,6 +12,7 @@
  */
 import art from './game-art.json';
 import artManifest from './art-manifest.json';
+import { ART_BASE } from './site';
 
 type ArtEntry = {
   name: string;
@@ -57,10 +58,11 @@ export function getArtSources(slug: string, _remote: string, sizes: string): Art
   // kept a third-party origin in the critical path for every card. Once a game
   // has local art the WebP serves that role — it is universally supported, so
   // the remote URL is now only reached when we have no local copy at all.
+  const b = ART_BASE;
   return {
-    avif: `/art/${slug}-320.avif 320w, /art/${slug}-480.avif 480w, /art/${slug}-640.avif 640w`,
-    webp: `/art/${slug}-320.webp 320w, /art/${slug}-480.webp 480w, /art/${slug}-640.webp 640w`,
-    src: `/art/${slug}-640.webp`,
+    avif: `${b}/art/${slug}-320.avif 320w, ${b}/art/${slug}-480.avif 480w, ${b}/art/${slug}-640.avif 640w`,
+    webp: `${b}/art/${slug}-320.webp 320w, ${b}/art/${slug}-480.webp 480w, ${b}/art/${slug}-640.webp 640w`,
+    src: `${b}/art/${slug}-640.webp`,
     sizes
   };
 }

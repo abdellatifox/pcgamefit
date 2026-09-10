@@ -13,3 +13,6 @@ npm-debug.log*
 
 .DS_Store
 Thumbs.db
+
+# Local ledger for scripts/sync-r2.mjs — build state, not source.
+src/lib/r2-uploaded.json
