@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import { getPageCover } from '../lib/images';
 import Icon from '../components/Icon.astro';
 import IconSprite from '../components/IconSprite.astro';
-import { SITE_URL } from '../lib/site';
+import { SITE_URL, ART_BASE } from '../lib/site';
 
 interface Props {
   title: string;
@@ -120,6 +120,14 @@ const year = new Date().getFullYear();
     before any glyph could paint. Preloading the two faces the first screen
     actually uses lets them start downloading alongside the CSS.
   -->
+  {ART_BASE && (
+    <>
+      {/* Game art moved to R2, so the first card image now costs a second
+          connection. Warm it while the HTML is still parsing. */}
+      <link rel="preconnect" href={ART_BASE} crossorigin />
+      <link rel="dns-prefetch" href={ART_BASE} />
+    </>
+  )}
   <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/space-grotesk-700.woff2" as="font" type="font/woff2" crossorigin>
 
