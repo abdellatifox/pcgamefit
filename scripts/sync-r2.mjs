@@ -30,6 +30,14 @@ const DIR = path.join(ROOT, arg('dir', 'public/art'));
 const PREFIX = arg('prefix', 'art');
 const CONCURRENCY = Number(arg('concurrency', 12));
 
+/**
+ * Without this R2 answers every request from origin — `cf-cache-status: DYNAMIC`
+ * — so the art loaded slower from the bucket than it had from Pages. A month is
+ * long enough for a high edge hit rate and short enough that art regenerated
+ * under the same filename heals on its own, which `immutable` would prevent.
+ */
+const CACHE_CONTROL = arg('cache-control', 'public, max-age=2592000, stale-while-revalidate=86400');
+
 const TYPES = {
   '.avif': 'image/avif',
   '.webp': 'image/webp',
@@ -59,6 +67,7 @@ const files = fs
 const total = files.length;
 console.log(`bucket   : ${BUCKET}`);
 console.log(`source   : ${path.relative(ROOT, DIR)}`);
+console.log(`cache    : ${CACHE_CONTROL}`);
 console.log(`to upload: ${total} (${done.size} already done)`);
 if (!total) process.exit(0);
 
@@ -71,7 +80,8 @@ function upload(file) {
     const ct = TYPES[path.extname(file.name).toLowerCase()];
     const p = spawn(
       process.execPath,
-      [WRANGLER, 'r2', 'object', 'put', `${BUCKET}/${file.key}`, '--file', file.abs, '--content-type', ct],
+      [WRANGLER, 'r2', 'object', 'put', `${BUCKET}/${file.key}`,
+        '--file', file.abs, '--content-type', ct, '--cache-control', CACHE_CONTROL],
       { stdio: 'ignore' }
     );
     p.on('close', (code) => {
