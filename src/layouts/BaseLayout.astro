@@ -123,8 +123,13 @@ const year = new Date().getFullYear();
   {ART_BASE && (
     <>
       {/* Game art moved to R2, so the first card image now costs a second
-          connection. Warm it while the HTML is still parsing. */}
-      <link rel="preconnect" href={ART_BASE} crossorigin />
+          connection. Warm it while the HTML is still parsing.
+
+          No `crossorigin` here: <img> loads are not CORS requests, and the
+          attribute made the browser reuse an anonymous-CORS connection for
+          them, which R2 rejects because the bucket sends no
+          Access-Control-Allow-Origin. Fonts need it; images must not have it. */}
+      <link rel="preconnect" href={ART_BASE} />
       <link rel="dns-prefetch" href={ART_BASE} />
     </>
   )}
