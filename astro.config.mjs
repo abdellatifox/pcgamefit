@@ -37,7 +37,9 @@ export default defineConfig({
   },
 
   build: {
-    inlineStylesheets: 'auto'
+    /* Every page's CSS is ~9 KB compressed. As two external files it blocked
+       first render for a round trip each; inline, it arrives with the HTML. */
+    inlineStylesheets: 'always'
   },
   vite: {
     ssr: { external: ['node:buffer'] }

@@ -45,33 +45,47 @@ for (const fam of FAMILIES) {
   // Each @font-face carries its own unicode-range; keep the latin ones.
   const faces = [...css.matchAll(/@font-face\s*\{([\s\S]*?)\}/g)].map(m => m[1]);
 
+  /* Both families are variable fonts, so Google answers every weight in the
+     request with the *same* file. Writing one file per weight shipped three
+     byte-identical copies of Inter under different URLs, and the browser
+     downloaded each separately. Group by source file instead and declare the
+     weights it covers as a range. */
+  const bySrc = new Map();
   for (const face of faces) {
     const range = (face.match(/unicode-range:\s*([^;]+);/) || [])[1] || '';
     if (!range.includes(LATIN)) continue;          // skip cyrillic/greek/vietnamese
     if (/latin-ext/.test(face)) continue;
 
     const family = (face.match(/font-family:\s*'([^']+)'/) || [])[1];
-    const weight = (face.match(/font-weight:\s*(\d+)/) || [])[1];
+    const weight = Number((face.match(/font-weight:\s*(\d+)/) || [])[1]);
     const src = (face.match(/url\((https:[^)]+\.woff2)\)/) || [])[1];
     if (!family || !weight || !src) continue;
 
-    const file = `${family.toLowerCase().replace(/\s+/g, '-')}-${weight}.woff2`;
+    if (!bySrc.has(src)) bySrc.set(src, { family, range: range.trim(), weights: [] });
+    bySrc.get(src).weights.push(weight);
+  }
+
+  let n = 0;
+  for (const [src, { family, range, weights }] of bySrc) {
+    const lo = Math.min(...weights), hi = Math.max(...weights);
+    const slug = family.toLowerCase().replace(/\s+/g, '-');
+    const file = bySrc.size === 1 ? `${slug}.woff2` : `${slug}-${lo}${hi !== lo ? '-' + hi : ''}.woff2`;
     const buf = Buffer.from(await (await fetch(src, { headers: { 'User-Agent': UA } })).arrayBuffer());
     fs.writeFileSync(path.join(OUT_DIR, file), buf);
-    downloaded++; bytes += buf.length;
+    downloaded++; bytes += buf.length; n++;
 
     blocks.push(
 `@font-face {
   font-family: '${family}';
   font-style: normal;
-  font-weight: ${weight};
+  font-weight: ${lo === hi ? lo : `${lo} ${hi}`};
   /* swap: show text immediately in the fallback rather than blocking paint */
   font-display: swap;
   src: url('/fonts/${file}') format('woff2');
-  unicode-range: ${range.trim()};
+  unicode-range: ${range};
 }`
     );
-    console.log(`  ${family} ${weight}  ${(buf.length / 1024).toFixed(1)} KB  -> ${file}`);
+    console.log(`  ${family} ${lo === hi ? lo : lo + '-' + hi}  ${(buf.length / 1024).toFixed(1)} KB  -> ${file}`);
   }
 }
 

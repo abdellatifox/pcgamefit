@@ -1,15 +1,16 @@
 ---
 import Icon from './Icon.astro';
 import { SITE_NAME } from '../lib/site';
+import brand from '../lib/brand-meta.json';
 const currentPath = Astro.url.pathname;
 ---
 <header class="nav">
   <div class="nav-inner">
     <a href="/" class="brand">
       <picture>
-        <source type="image/avif" srcset="/logo.avif" />
-        <source type="image/webp" srcset="/logo.webp" />
-        <img src="/logo.png" alt={SITE_NAME} width="284" height="64" decoding="async" fetchpriority="high" />
+        <source type="image/avif" srcset={brand.logo.avif} />
+        <source type="image/webp" srcset={brand.logo.webp} />
+        <img src={brand.logo.png} alt={SITE_NAME} width={brand.logoWidth} height={brand.logoHeight} decoding="async" />
       </picture>
     </a>
     

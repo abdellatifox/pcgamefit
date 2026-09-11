@@ -95,7 +95,7 @@ const homeFaqSchema = {
       </div>
       <div class="hero-card">
         <div class="card-header">
-          <h3>Quick Check</h3>
+          <h2 class="qc-title">Quick Check</h2>
         </div>
         <div class="card-body">
           <Autocomplete
@@ -129,19 +129,19 @@ const homeFaqSchema = {
     <!-- STATS SECTION -->
     <section class="stats-section">
       <div class="stat-card">
-        <h3 class="g">{gameCount}</h3>
+        <p class="g stat-num heading-like">{gameCount}</p>
         <p>Games with publisher requirements</p>
       </div>
       <div class="stat-card">
-        <h3 class="g">{gpuCount}</h3>
+        <p class="g stat-num heading-like">{gpuCount}</p>
         <p>GPUs Indexed</p>
       </div>
       <div class="stat-card">
-        <h3 class="g">{cpuCount}</h3>
+        <p class="g stat-num heading-like">{cpuCount}</p>
         <p>CPUs Benchmarked</p>
       </div>
       <div class="stat-card">
-        <h3 class="g">Free</h3>
+        <p class="g stat-num heading-like">Free</p>
         <p>Forever</p>
       </div>
     </section>
@@ -162,62 +162,62 @@ const homeFaqSchema = {
         </a>
         <a href="/fps-estimator" class="tool">
           <Icon name="speedometer2" />
-          <h4>FPS Estimator</h4>
+          <h3>FPS Estimator</h3>
           <p>Predict your FPS before buying</p>
         </a>
         <a href="/bottleneck" class="tool">
           <Icon name="cpu" />
-          <h4>Bottleneck Calculator</h4>
+          <h3>Bottleneck Calculator</h3>
           <p>Find your CPU-GPU mismatch</p>
         </a>
         <a href="/gpu-tier-list" class="tool">
           <Icon name="bar-chart-line-fill" />
-          <h4>GPU Tier List</h4>
+          <h3>GPU Tier List</h3>
           <p>Every GPU ranked S to F</p>
         </a>
         <a href="/cpu-tier-list" class="tool">
           <Icon name="cpu-fill" />
-          <h4>CPU Tier List</h4>
+          <h3>CPU Tier List</h3>
           <p>Every CPU ranked for gaming</p>
         </a>
         <a href="/compare-gpu" class="tool">
           <Icon name="arrows-expand" />
-          <h4>GPU Comparison</h4>
+          <h3>GPU Comparison</h3>
           <p>Head-to-head GPU benchmarks</p>
         </a>
         <a href="/compare-cpu" class="tool">
           <Icon name="arrows-expand" />
-          <h4>CPU Comparison</h4>
+          <h3>CPU Comparison</h3>
           <p>Head-to-head CPU benchmarks</p>
         </a>
         <a href="/psu-calculator" class="tool">
           <Icon name="lightning" />
-          <h4>PSU Calculator</h4>
+          <h3>PSU Calculator</h3>
           <p>Find your power supply needs</p>
         </a>
         <a href="/build-suggest" class="tool">
           <Icon name="pc-display" />
-          <h4>Build Suggester</h4>
+          <h3>Build Suggester</h3>
           <p>Get a full parts list for your budget</p>
         </a>
         <a href="/what-can-my-pc-run" class="tool">
           <Icon name="joystick" />
-          <h4>What Can My PC Run</h4>
+          <h3>What Can My PC Run</h3>
           <p>Discover compatible games</p>
         </a>
         <a href="/dlss-fsr" class="tool">
           <Icon name="magic" />
-          <h4>DLSS vs FSR</h4>
+          <h3>DLSS vs FSR</h3>
           <p>Pick the right upscaler for your GPU</p>
         </a>
         <a href="/upgrade-advisor" class="tool">
           <Icon name="arrow-up-circle" />
-          <h4>Upgrade Advisor</h4>
+          <h3>Upgrade Advisor</h3>
           <p>Know what to upgrade next</p>
         </a>
         <a href="/vr-ready" class="tool">
           <Icon name="badge-vr" />
-          <h4>VR Ready Test</h4>
+          <h3>VR Ready Test</h3>
           <p>Check your PC against VR headsets</p>
         </a>
         <a href="/blog" class="tool wide">
@@ -241,12 +241,12 @@ const homeFaqSchema = {
           <div class="game-card">
             <a href={`/game/${game.slug}`} class="game-img-wrap" data-kind={game.art.kind}
                style={game.art.kind !== 'cover' ? `--hue:${game.art.hue}` : undefined}>
-              <GameArt slug={game.slug} art={game.art} eager={i < 4}
-                sizes="(max-width: 640px) 45vw, 220px"
+              <GameArt slug={game.slug} art={game.art}
+                sizes="(max-width: 640px) 36vw, 172px"
                 className={game.art.kind === 'cover' ? 'game-img' : game.art.kind === 'logo' ? 'game-logo' : 'game-initials'} />
             </a>
             <div class="game-info">
-              <h4><a href={`/game/${game.slug}`}>{game.name}</a></h4>
+              <h3><a href={`/game/${game.slug}`}>{game.name}</a></h3>
               <span class="badge">{game.genre}</span>
               <a href={`/can-it-run?game=${game.slug}`} class="btn-sm mt-2">Check &rarr;</a>
             </div>
@@ -268,7 +268,7 @@ const homeFaqSchema = {
             </div>
             <div class="blog-info">
               <span class="badge">{post.category}</span>
-              <h4>{post.title}</h4>
+              <h3>{post.title}</h3>
               <span class="read-time">{post.readTime}</span>
             </div>
           </a>
@@ -368,7 +368,7 @@ const homeFaqSchema = {
       } else {
         const icon = d.tone === 'pass' ? '✅' : d.tone === 'warn' ? '⚠️' : '❌';
         verdict.innerHTML = `
-          <h4 style="color: var(--accent);">${icon} ${escHero(d.verdict)}</h4>
+          <h3 style="color: var(--accent);">${icon} ${escHero(d.verdict)}</h3>
           <p>${escHero(d.detail)}</p>
           <a href="/can-it-run?game=${encodeURIComponent(game)}" class="hero-full-link">See full breakdown &rarr;</a>`;
       }
@@ -483,7 +483,7 @@ const homeFaqSchema = {
   }
   .tiny-footer {
     font-size: 0.75rem;
-    color: #666;
+    color: var(--muted);
     text-align: center;
     margin-top: 1rem;
   }
@@ -500,10 +500,14 @@ const homeFaqSchema = {
     padding: 2rem;
     border-radius: 12px;
   }
-  .stat-card h3 {
+  .stat-card .stat-num {
     font-size: 2.5rem;
     margin: 0;
   }
+  /* Tags changed for heading order; these pin the sizes they rendered at. */
+  .card-header .qc-title { font-size: 1.17rem; }
+  .game-info h3, .blog-info h3 { font-size: 1rem; }
+  .verdict-box :global(h3) { font-size: 1rem; }
   .section-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -691,8 +695,8 @@ const homeFaqSchema = {
     font-weight: 700;
     color: hsl(var(--hue) 70% 72%);
   }
-  .game-info h4 a { color: inherit; text-decoration: none; }
-  .game-info h4 a:hover { color: var(--accent); }
+  .game-info h3 a { color: inherit; text-decoration: none; }
+  .game-info h3 a:hover { color: var(--accent); }
   /* --------------------------------------------------------------------------
      Homepage responsive layer.
 
@@ -752,16 +756,17 @@ const homeFaqSchema = {
     .stat-card {
       padding: 1.25rem;
     }
-    .stat-card h3 {
+    .stat-card .stat-num {
       font-size: 1.9rem;
     }
+    .card-header .qc-title { font-size: clamp(17px, 4vw, 22px); }
   }
 
   /* Card links were 21px tall and the "Check" button 34px — both under the
      44px thumb minimum, on the densest grid of tap targets on the site. */
   @media (pointer: coarse) {
-    .game-card .game-info h4 a,
-    .blog-card .blog-info h4 a {
+    .game-card .game-info h3 a,
+    .blog-card .blog-info h3 a {
       display: inline-flex;
       align-items: center;
       min-height: 40px;

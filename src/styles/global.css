@@ -21,7 +21,8 @@
   /* Typography Colors */
   --text: #E8ECF2;
   --muted: #8A9099;
-  --faint: #5A6070;
+  /* 5.47:1 on the ground, 4.69:1 on --surface-2 — it was 3.15 and 2.70. */
+  --faint: #808794;
   
   /* Accents */
   --accent: #B6FF00;
@@ -78,58 +79,23 @@ body::after {
   overflow: hidden;
 }
 
-.aurora span {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  will-change: transform;
-}
-
-.aurora .a1 {
-  width: 600px;
-  height: 600px;
-  background: var(--accent);
-  top: -100px;
-  left: -100px;
-  animation: drift1 20s infinite alternate ease-in-out;
-}
-
-.aurora .a2 {
-  width: 400px;
-  height: 400px;
-  background: var(--accent-deep);
-  top: -50px;
-  right: -50px;
-  animation: drift2 28s infinite alternate ease-in-out;
-}
-
-.aurora .a3 {
-  width: 500px;
-  height: 500px;
-  background: rgba(182, 255, 0, 0.2);
-  bottom: -150px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: drift3 35s infinite alternate ease-in-out;
-}
-
-@keyframes drift1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(50px, 80px) scale(1.1); }
-  100% { transform: translate(-30px, 40px) scale(0.9); }
-}
-
-@keyframes drift2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-60px, 40px) scale(1.15); }
-  100% { transform: translate(40px, -20px) scale(0.95); }
-}
-
-@keyframes drift3 {
-  0% { transform: translate(-50%, 0) scale(1); }
-  50% { transform: translate(-40%, -60px) scale(1.05); }
-  100% { transform: translate(-60%, 20px) scale(0.98); }
+/* The glows used to be three discs up to 600px wide under filter: blur(100px),
+   each on an infinite transform animation. Rasterising that blur was the single
+   most expensive thing on every page. The same falloff drawn as radial
+   gradients costs one paint and never repaints. Stops approximate a solid disc
+   at 0.4 opacity blurred by 100px: flat through the core, half strength at the
+   disc's edge, gone ~150px beyond it. */
+.aurora {
+  background:
+    radial-gradient(circle 450px at 200px 200px,
+      rgba(182, 255, 0, 0.36) 0%, rgba(182, 255, 0, 0.28) 45%,
+      rgba(182, 255, 0, 0.14) 67%, rgba(182, 255, 0, 0) 100%),
+    radial-gradient(circle 350px at calc(100% - 150px) 150px,
+      rgba(139, 204, 0, 0.34) 0%, rgba(139, 204, 0, 0.18) 57%,
+      rgba(139, 204, 0, 0) 100%),
+    radial-gradient(circle 400px at 50% calc(100% - 100px),
+      rgba(182, 255, 0, 0.08) 0%, rgba(182, 255, 0, 0.04) 62%,
+      rgba(182, 255, 0, 0) 100%);
 }
 
 /* --------------------------------------------------------------------------
@@ -140,7 +106,10 @@ body::after {
   top: 0;
   left: 0;
   height: 2px;
-  width: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
   z-index: 60;
   background: linear-gradient(90deg, var(--accent), var(--accent-deep));
   box-shadow: 0 0 14px var(--accent);
@@ -149,7 +118,7 @@ body::after {
 /* --------------------------------------------------------------------------
    Section 5 - Typography
    -------------------------------------------------------------------------- */
-h1, h2, h3, h4 {
+h1, h2, h3, h4, .heading-like {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   letter-spacing: -0.022em;
@@ -172,7 +141,6 @@ a {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer 6s linear infinite;
 }
 
 @keyframes shimmer {
@@ -244,8 +212,9 @@ header.nav {
   margin: 14px auto;
   max-width: 1200px;
   padding: 0.55rem 0.7rem 0.55rem 1rem;
-  background: rgba(9, 10, 15, 0.65);
-  backdrop-filter: blur(20px);
+  /* Opaque enough to read over anything, so no backdrop-filter: blurring the
+     page behind a sticky bar is redone on every scrolled frame. */
+  background: rgba(9, 10, 15, 0.92);
   border: 1px solid var(--line-strong);
   border-radius: 17px;
   box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.9);
@@ -348,7 +317,6 @@ header.nav {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   border-color: var(--line-strong);
-  backdrop-filter: blur(8px);
 }
 
 .btn-ghost:hover {
@@ -475,8 +443,10 @@ header.nav {
   border: 1px solid rgba(182, 255, 0, 0.18);
 }
 
+/* Tile titles were h4 at 16px; now that they are h3 (they are peers of the
+   featured tile's h3) this keeps them at the size they rendered. */
 .tool h3 {
-  font-size: 1.07rem;
+  font-size: 1rem;
 }
 
 .tool p {
@@ -561,7 +531,8 @@ header.nav {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shimmer 9s linear infinite;
+  /* Static: animating background-position repainted this headline on the
+     main thread every frame for as long as the page was open. */
 }
 
 .hero p.lead {
@@ -1103,7 +1074,7 @@ select:focus, input:focus {
     opacity: 1;
     transform: none;
   }
-  .aurora span, .hero h1 .g, .live-dot {
+  .live-dot {
     animation: none;
   }
 }
@@ -1177,7 +1148,7 @@ select:focus, input:focus {
   gap: 28px;
   margin-top: 28px;
 }
-.foot-cols h4 {
+.foot-cols h2 {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: .08em;
