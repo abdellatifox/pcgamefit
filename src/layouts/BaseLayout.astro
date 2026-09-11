@@ -264,24 +264,33 @@ const year = new Date().getFullYear();
       });
     });
   </script>
-  <!-- Tag manager, loaded last. The page finishes and the main thread goes idle
-       before /tm.js is even requested, so analytics never competes with first
-       paint or input. The container id is not in this file: /tm.js reads it
-       from the Cloudflare secret GTM_ID. -->
+  <!-- Tag manager, loaded after the page is visible. It waits for the first
+       sign of a person — scroll, tap, click, key — or 3.5s after load, whichever
+       comes first. Loading it on the load event instead dropped mobile
+       Lighthouse from 98 to 88: gtm.js started before the largest paint had
+       finished and competed with it on a slow connection. Visitors who leave
+       within 3.5s without touching the page are not counted.
+       The container id is not in this file: /tm.js reads it from the
+       Cloudflare secret GTM_ID. -->
   <script is:inline>
     (function () {
+      var fired = false;
+      var cues = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
       var load = function () {
+        if (fired) return;
+        fired = true;
+        cues.forEach(function (c) { window.removeEventListener(c, load); });
         var s = document.createElement('script');
         s.src = '/tm.js';
         s.async = true;
         document.head.appendChild(s);
       };
-      var whenIdle = function () {
-        if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 3000 });
-        else setTimeout(load, 1500);
+      var arm = function () {
+        cues.forEach(function (c) { window.addEventListener(c, load, { passive: true }); });
+        setTimeout(load, 3500);
       };
-      if (document.readyState === 'complete') whenIdle();
-      else window.addEventListener('load', whenIdle, { once: true });
+      if (document.readyState === 'complete') arm();
+      else window.addEventListener('load', arm, { once: true });
     })();
   </script>
 </body>
